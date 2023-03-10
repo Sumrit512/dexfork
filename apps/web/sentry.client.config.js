@@ -13,37 +13,47 @@ const isUserRejected = (err) => {
 
 const ENV = process.env.VERCEL_ENV || process.env.NODE_ENV
 
+// init({
+//   dsn: SENTRY_DSN || 'https://5d6471d426d44287b2747bba813963b3@o4504813592051712.ingest.sentry.io/4504813593100288',
+//   integrations: [
+//     new Breadcrumbs({
+//       console: ENV === 'production',
+//     }),
+//     new GlobalHandlers({
+//       onerror: false,
+//       onunhandledrejection: false,
+//     }),
+//     new Dedupe(),
+//   ],
+//   environment: ENV === 'production' ? 'production' : 'development',
+//   // Adjust this value in production, or use tracesSampler for greater control
+//   tracesSampleRate: 0,
+//   // ...
+//   // Note: if you want to override the automatic release value, do not set a
+//   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
+//   // that it will also get attached to your source maps
+//   beforeSend(event, hint) {
+//     const error = hint?.originalException
+//     if (error && isUserRejected(error)) {
+//       return null
+//     }
+//     return event
+//   },
+//   ignoreErrors: [
+//     'User denied transaction signature',
+//     'Non-Error promise rejection captured',
+//     'User rejected the transaction',
+//     'cancelled',
+//     'PollingBlockTracker',
+//   ],
+// })
+
 init({
-  dsn: SENTRY_DSN,
-  integrations: [
-    new Breadcrumbs({
-      console: ENV === 'production',
-    }),
-    new GlobalHandlers({
-      onerror: false,
-      onunhandledrejection: false,
-    }),
-    new Dedupe(),
-  ],
-  environment: ENV === 'production' ? 'production' : 'development',
+  dsn: SENTRY_DSN || 'https://5d6471d426d44287b2747bba813963b3@o4504813592051712.ingest.sentry.io/4504813593100288',
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 0,
   // ...
   // Note: if you want to override the automatic release value, do not set a
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
   // that it will also get attached to your source maps
-  beforeSend(event, hint) {
-    const error = hint?.originalException
-    if (error && isUserRejected(error)) {
-      return null
-    }
-    return event
-  },
-  ignoreErrors: [
-    'User denied transaction signature',
-    'Non-Error promise rejection captured',
-    'User rejected the transaction',
-    'cancelled',
-    'PollingBlockTracker',
-  ],
-})
+});
